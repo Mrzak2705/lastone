@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { RegisterComponent } from './register/register.component';
+
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 import { AdminBoardComponent } from './admin-board/admin-board.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -12,6 +13,7 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
 
 
 const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'admin-board', component: AdminBoardComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -22,7 +24,7 @@ const routes: Routes = [
   { path: 'admin', component: BoardAdminComponent },
  
 
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+
 ];
 
 @NgModule({

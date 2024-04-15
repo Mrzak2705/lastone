@@ -6,13 +6,11 @@ import { AuthService } from '../_services/auth.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-// Angular component class
 export class RegisterComponent implements OnInit {
   form: any = {
-    username: null,
+    name: null,
     email: null,
-    password: null,
-    roles: []
+    password: null
   };
   isSuccessful = false;
   isSignUpFailed = false;
@@ -22,17 +20,20 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit(): void {
-    this.authService.register(this.form).subscribe(
+  onRegister(): void {
+    this.authService.register({
+      username: this.form.name,  // Assuming the backend expects 'username' not 'name'
+      email: this.form.email,
+      password: this.form.password
+    }).subscribe(
       data => {
-        console.log('Registration successful', data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
+        // Optionally, redirect the user or clear the form
       },
       err => {
         this.errorMessage = err.error.message;
         this.isSignUpFailed = true;
-        console.error('Registration failed', err.error.message);
       }
     );
   }
