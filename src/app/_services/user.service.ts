@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import{ProjetRequest} from 'src/app/_services/models/projet-request'
 
 const BASE_URL = 'http://localhost:8080/api/';
 
@@ -33,6 +34,10 @@ export class UserService {
     return this.http.get(BASE_URL + 'user/list');
   }
 
+  getAllProjects(): Observable<any> {
+    return this.http.get(BASE_URL + 'user/listProjects');
+  }
+
   // Angular service to update user roles
 updateUserRoles(userId: number, roles: string[]): Observable<any> {
   return this.http.put(`${BASE_URL}user/${userId}/roles`, { roles });
@@ -42,6 +47,13 @@ updateUserRoles(userId: number, roles: string[]): Observable<any> {
 addUser(user): Observable<any> {
   return this.http.post(BASE_URL + 'user/add', user);
 }
+
+addProject(projet: ProjetRequest): Observable<any> {
+  return this.http.post(BASE_URL + 'user/addPoject', projet, {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  });
+}
+
 
 updateUser(userId: number, user: any): Observable<any> {
   return this.http.put(`${BASE_URL}user/${userId}`, user);
@@ -54,6 +66,7 @@ updateUser(userId: number, user: any): Observable<any> {
     return this.http.delete(`${BASE_URL}user/${userId}`);
   }
   
+
 
   
   

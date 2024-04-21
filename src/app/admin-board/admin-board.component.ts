@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../_services/user.service';
+import{ProjetRequest} from 'src/app/_services/models/projet-request'
 
 @Component({
   selector: 'app-admin-board',
@@ -9,8 +10,23 @@ import { UserService } from '../_services/user.service';
 export class AdminBoardComponent implements OnInit {
   users: any[] = [];
   allRoles = ['ROLE_USER', 'ROLE_MODERATOR', 'ROLE_ADMIN']; // Define all possible roles
+  nomProjet = '';
+  codeProjet = '';
+  projects: any[] = [];
 
   constructor(private userService: UserService) { }
+  addProject() {
+    const projetRequest = new ProjetRequest(this.nomProjet, this.codeProjet);
+
+    this.userService.addProject(projetRequest).subscribe(
+      (response) => {
+        console.log('Project added successfully:', response);
+      },
+      (error) => {
+        console.error('Error adding project:', error);
+      }
+    );
+  }
 
   
 
@@ -22,6 +38,30 @@ export class AdminBoardComponent implements OnInit {
       },
       (error) => {
         console.error('Error loading users:', error);
+      }
+    );
+
+    this.userService.getAllUsers().subscribe(
+      (data) => {
+        this.projects = data;
+        console.log('Projects loaded:', this.projects); // Afficher les projets pour vérifier les IDs
+      },
+      (error) => {
+        console.error('Error loading Projects:', error);
+      }
+    );
+    
+
+  }
+
+  fetchProjects() {
+    this.userService.getAllProjects().subscribe(
+      (data) => {
+        this.projects = data;
+        console.log('Projects loaded:', this.projects);
+      },
+      (error) => {
+        console.error('Error loading projects:', error);
       }
     );
   }
