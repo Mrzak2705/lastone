@@ -4,28 +4,37 @@
     <!-- Formulaire pour ajouter un nouvel utilisateur -->
     <div class="mb-4">
         <h4>Ajouter un utilisateur</h4>
-        <form (ngSubmit)="addUser(addUserForm.value)" #addUserForm="ngForm">
-            <div class="form-row">
-                <div class="col">
-                    <input type="text" ngModel name="username" class="form-control" placeholder="Nom d'utilisateur" required>
+        <div class="mb-4">
+            <h4>Ajouter un utilisateur</h4>
+            <form (ngSubmit)="addUser(addUserForm.value)" #addUserForm="ngForm">
+                <div class="form-row">
+                    <div class="col">
+                        <input type="text" ngModel name="username" class="form-control" placeholder="Nom d'utilisateur" required>
+                    </div>
+                    <div class="col">
+                        <input type="email" ngModel name="email" class="form-control" placeholder="Email" required>
+                    </div>
+                    <div class="col">
+                        <input type="password" ngModel name="password" class="form-control" placeholder="Mot de passe" required>
+                    </div>
+                    <div class="col">
+                        <select [(ngModel)]="selectedRole" ngModel name="role" class="form-control">
+                            <option value="ROLE_USER">Utilisateur</option>
+                            <option value="ROLE_MODERATOR">Modérateur</option>
+                            <option value="ROLE_ADMIN">Admin</option>
+                        </select>
+                    </div>
+                    <div class="col" *ngIf="selectedRole === 'ROLE_USER'">
+                        <select [(ngModel)]="selectedModeratorId" ngModel name="moderatorId" class="form-control">
+                            <option *ngFor="let mod of moderators" [value]="mod.id">{{ mod.username }}</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success" [disabled]="!addUserForm.valid">Ajouter</button>
+                    </div>
                 </div>
-                <div class="col">
-                    <input type="email" ngModel name="email" class="form-control" placeholder="Email" required>
-                </div>
-                <div class="col">
-                    <input type="password" ngModel name="password" class="form-control" placeholder="Mot de passe" required>
-                </div>
-                <div class="col">
-                    <select multiple ngModel name="roles" class="form-control">
-                        <option *ngFor="let role of allRoles" [ngValue]="role">{{ role }}</option>
-                    </select>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-success" [disabled]="!addUserForm.valid">Ajouter</button>
-                </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
 
     <!-- Formulaire pour ajouter un projet -->
     <div class="mb-4">
@@ -61,18 +70,18 @@
         <tbody>
             <tr *ngFor="let user of users">
                 <td>
-                    <input type="text" [(ngModel)]="user.username" name="username" class="form-control">
+                    <input type="text" [(ngModel)]="user.username" name="username{{user.id}}" class="form-control">
                 </td>
                 <td>
-                    <input type="email" [(ngModel)]="user.email" name="email" class="form-control">
+                    <input type="email" [(ngModel)]="user.email" name="email{{user.id}}" class="form-control">
                 </td>
                 <td>
-                    <select multiple [(ngModel)]="user.roles" class="form-control">
-                        <option *ngFor="let role of allRoles" [ngValue]="role">{{ role }}</option>
+                    <select [(ngModel)]="user.selectedRole" (change)="updateRole(user, user.selectedRole)" class="form-control">
+                        <option *ngFor="let role of allRoles" [value]="role">{{ role }}</option>
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-primary" (click)="updateUserRoles(user)">Modifier</button>
+                    <button class="btn btn-primary" (click)="updateUser(user)">Modifier</button>
                     <button class="btn btn-danger" (click)="deleteUser(user)">Supprimer</button>
                 </td>
             </tr>
@@ -86,22 +95,75 @@
             <tr>
                 <th>Nom Projet</th>
                 <th>Code Projet</th>
+                <th>Actions</th>
                
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let project of projects">
                 <td>
-                    <input type="text" [(ngModel)]="projet.nomProjet" name="nomProjet" class="form-control">
+                    <input type="text" [(ngModel)]="project.nomProjet" name="nomProjet" class="form-control">
                 </td>
                 <td>
-                    <input type="text" [(ngModel)]="projet.codeProjet" name="codeProjet" class="form-control">
+                    <input type="text" [(ngModel)]="project.codeProjet" name="codeProjet" class="form-control">
                 </td>
                 <td>
-                    <button class="btn btn-primary" (click)="updateUserRoles(user)">Modifier</button>
-                    <button class="btn btn-danger" (click)="deleteUser(user)">Supprimer</button>
+                    <button class="btn btn-primary" (click)="updateProject(project)">Modifier</button>
+                    <button class="btn btn-danger" (click)="deleteProject(project)">Supprimer</button>
                 </td>
             </tr>
         </tbody>
     </table>
+
+
+
+
+
+
+
+<!-- Affichage des projets existants -->
+<h3>Projets Assign</h3>
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Nom Projet</th>
+            <th>Code Projet</th>
+            <th>User</th>
+            <th>Actions</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let project of projects">
+            <td>
+                <input type="text" [(ngModel)]="project.nomProjet" name="nomProjet" class="form-control">
+            </td>
+            <td>
+                <input type="text" [(ngModel)]="project.codeProjet" name="codeProjet" class="form-control">
+            </td>
+            <td>
+                <input type="text" [(ngModel)]="project.codeProjet" name="codeProjet" class="form-control">
+            </td>
+            <td>
+                <button class="btn btn-primary" (click)="updateProject(project)">Modifier</button>
+                <button class="btn btn-danger" (click)="deleteProject(project)">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>

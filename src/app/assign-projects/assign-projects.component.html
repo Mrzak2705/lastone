@@ -1,0 +1,49 @@
+<!-- assign-projects.component.html -->
+
+<!-- Notification area for Toast messages -->
+<p-toast position="top-right"></p-toast> 
+
+<!-- Main container for the component -->
+<div class="assign-projects-container">
+  <h2>Assign Projects to User</h2>
+
+  <!-- Section for selecting a user -->
+  <div class="form-group">
+    <label for="user">Select User:</label>
+    <select id="user" class="form-control" [(ngModel)]="selectedUser">
+      <option *ngFor="let user of users" [ngValue]="user">
+        {{ user.username }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Section for selecting multiple projects -->
+  <div class="form-group">
+    <label for="projects">Select Projects:</label>
+    <select 
+      id="projects" 
+      class="form-control" 
+      multiple 
+      [(ngModel)]="selectedProjectIds"
+      aria-describedby="project-help"
+    >
+      <option *ngFor="let projet of projets" [value]="projet.id">
+        {{ projet.nomProjet }}
+      </option>
+    </select>
+    <!-- Provide additional instructions if needed -->
+    <small id="project-help" class="form-text text-muted">
+      
+    </small>
+  </div>
+
+  <!-- Button to assign projects to the selected user -->
+  <button 
+    class="btn btn-primary" 
+    (click)="assignProjects()"
+  >
+    Assign Projects
+  </button>
+</div>
+
+

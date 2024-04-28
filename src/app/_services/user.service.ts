@@ -9,6 +9,8 @@ const BASE_URL = 'http://localhost:8080/api/';
   providedIn: 'root'
 })
 export class UserService {
+  private baseUrl = 'http://localhost:8080/api/user';
+
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +27,11 @@ export class UserService {
     return this.http.get(BASE_URL + 'test/mod', { responseType: 'text' });
   }
 
+  getModerators(): Observable<any> {
+    return this.http.get(this.baseUrl + '/moderators');
+  }
+
+
   getAdminBoard(): Observable<any> {
     return this.http.get(BASE_URL + 'test/admin', { responseType: 'text' });
   }
@@ -38,15 +45,28 @@ export class UserService {
     return this.http.get(BASE_URL + 'user/listProjects');
   }
 
-  // Angular service to update user roles
-updateUserRoles(userId: number, roles: string[]): Observable<any> {
-  return this.http.put(`${BASE_URL}user/${userId}/roles`, { roles });
+ // Angular service to update user roles
+ updateUserRoles(userId: number, roles: string[]): Observable<any> {
+  return this.http.put(`${this.baseUrl}/${userId}/roles`, { roles });
 }
 
-// Angular service to add a user
-addUser(user): Observable<any> {
-  return this.http.post(BASE_URL + 'user/add', user);
+ // Angular service to add a user
+ addUser(user): Observable<any> {
+  return this.http.post(`${this.baseUrl}/add`, user);
 }
+
+
+updateUser(id: number, user: any): Observable<any> {
+  const headers = new HttpHeaders().set('Content-Type', 'application/json');
+  return this.http.put(`${this.baseUrl}/update/${id}`, JSON.stringify(user), { headers });
+}
+
+deleteUser(userId: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/${userId}`);
+}
+
+
+
 
 addProject(projet: ProjetRequest): Observable<any> {
   return this.http.post(BASE_URL + 'user/addPoject', projet, {
@@ -54,16 +74,14 @@ addProject(projet: ProjetRequest): Observable<any> {
   });
 }
 
-
-updateUser(userId: number, user: any): Observable<any> {
-  return this.http.put(`${BASE_URL}user/${userId}`, user);
+updateProject(id: number, projet: ProjetRequest): Observable<any> {
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  return this.http.put(`${BASE_URL}user/updateProject/${id}`, projet, { headers });
 }
 
 
-
-
-  deleteUser(userId: number): Observable<any> {
-    return this.http.delete(`${BASE_URL}user/${userId}`);
+  deleteProject(projectId: number): Observable<any> {
+    return this.http.delete(`${BASE_URL}user/delete/${projectId}`);
   }
   
 
