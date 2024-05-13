@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable,throwError } from 'rxjs';
 import{ProjetRequest} from 'src/app/_services/models/projet-request'
+import { TokenStorageService } from '../_services/token-storage.service';
+import { catchError } from 'rxjs/operators';
 
 const BASE_URL = 'http://localhost:8080/api/';
 
@@ -12,12 +14,32 @@ export class UserService {
   private baseUrl = 'http://localhost:8080/api/user';
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private tokenStorage: TokenStorageService) { }
 
   // Existing methods for fetching content based on roles
   getPublicContent(): Observable<any> {
     return this.http.get(BASE_URL + 'test/all', { responseType: 'text' });
   }
+
+
+  getProjectsForCurrentUser(): Observable<any> {
+    const token = this.tokenStorage.getToken(); // Récupérer le token JWT
+    if (!token) {
+      console.error("Token not found in localStorage");
+      return throwError("Token not found in localStorage"); // Gérer le cas où le token n'est pas trouvé
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get(`${BASE_URL}test/my-projects`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error("Error fetching projects:", error);
+          return throwError(error); // Retourner l'erreur pour que l'appelant puisse la gérer
+        })
+      );
+  }
+
 
   getUserBoard(): Observable<any> {
     return this.http.get(BASE_URL + 'test/user', { responseType: 'text' });

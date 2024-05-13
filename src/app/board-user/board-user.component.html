@@ -1,5 +1,56 @@
-<div class="container">
-  <header class="jumbotron">
-    <p>{{ content }}</p>
-  </header>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Assigned Projects</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Style for gray and orange theme */
+    .jumbotron {
+      background-color: lightgray;
+    }
+    .thead-dark {
+      background-color: darkgray;
+      color: orange;
+    }
+    .table-bordered th, 
+    .table-bordered td {
+      border: 1px solid orange;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="jumbotron">
+      <h2>My Assigned Projects</h2>
+
+      <!-- Display list of projects if available -->
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Nom du projet</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Projects to be dynamically displayed -->
+          <tr *ngFor="let project of projects">
+            <td>{{ project.projectName }}</td>
+            <td>{{ project.startDate }}</td>
+            <td>{{ project.endDate }}</td>
+          </tr>
+          <!-- In case of no projects, display this message -->
+          <tr *ngIf="!projects || projects.length === 0">
+            <td colspan="3">No projects assigned.</td>
+          </tr>
+        </tbody>
+      </table>
+    </header>
+  </div>
+
+  <!-- Add any required scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

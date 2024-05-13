@@ -1,49 +1,125 @@
-<!-- assign-projects.component.html -->
+<!-- Conteneur principal avec fond gris clair -->
+<div class="container-fluid bg-light" style="padding: 20px;">
 
-<!-- Notification area for Toast messages -->
-<p-toast position="top-right"></p-toast> 
+  <!-- Carte avec ombre et arrière-plan clair -->
+  <div class="card shadow-lg" style="background: rgba(255, 255, 255, 0.85);">
+    <div class="card-body">
 
-<!-- Main container for the component -->
-<div class="assign-projects-container">
-  <h2>Assign Projects to User</h2>
+      <!-- En-tête avec texte orange -->
+      <h2 class="text-center text-warning mb-4">Assign Projects to a User</h2>
 
-  <!-- Section for selecting a user -->
-  <div class="form-group">
-    <label for="user">Select User:</label>
-    <select id="user" class="form-control" [(ngModel)]="selectedUser">
-      <option *ngFor="let user of users" [ngValue]="user">
-        {{ user.username }}
-      </option>
-    </select>
-  </div>
+      <!-- Sélection d'utilisateur -->
+      <div class="form-group">
+        <label for="user">Select User:</label>
+        <select
+          id="user"
+          class="form-control"
+          [(ngModel)]="selectedUserId"
+          required
+        >
+          <option *ngFor="let user of users" [value]="user.id">
+            {{ user.username }}
+          </option>
+        </select>
+      </div>
 
-  <!-- Section for selecting multiple projects -->
-  <div class="form-group">
-    <label for="projects">Select Projects:</label>
-    <select 
-      id="projects" 
-      class="form-control" 
-      multiple 
-      [(ngModel)]="selectedProjectIds"
-      aria-describedby="project-help"
-    >
-      <option *ngFor="let projet of projets" [value]="projet.id">
-        {{ projet.nomProjet }}
-      </option>
-    </select>
-    <!-- Provide additional instructions if needed -->
-    <small id="project-help" class="form-text text-muted">
-      
-    </small>
-  </div>
+      <!-- Sélection de projets (multi-sélection) -->
+      <div class="form-group">
+        <label for="projects">Select Projects:</label>
+        <select
+          id="projects"
+          class="form-control"
+          multiple
+          [(ngModel)]="selectedProjectIds"
+          required
+        >
+          <option *ngFor="let project of projects" [value]="project.id">
+            {{ project.nomProjet }}
+          </option>
+        </select>
+        <small class="form-text text-muted">
+          Hold Ctrl (Windows) or Command (Mac) to select multiple projects.
+        </small>
+      </div>
 
-  <!-- Button to assign projects to the selected user -->
-  <button 
-    class="btn btn-primary" 
-    (click)="assignProjects()"
-  >
-    Assign Projects
-  </button>
-</div>
+      <!-- Sélection des dates avec bordure grise -->
+      <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input
+          type="date"
+          id="startDate"
+          class="form-control border-secondary"
+          [(ngModel)]="startDate"
+          required
+        />
+      </div>
 
+      <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input
+          type="date"
+          id="endDate"
+          class="form-control border-secondary"
+          [(ngModel)]="endDate"
+          required
+        />
+      </div>
 
+      <!-- Bouton pour assigner les projets -->
+      <div class="text-center">
+        <button
+          class="btn"
+          style="background-color: #ff7f00; color: white;"
+          (click)="assignProjects()"
+          [disabled]="!isFormValid()"
+        >
+          Assign Projects
+        </button>
+      </div>
+
+      <!-- En-tête pour la liste des projets affectés -->
+      <h3>Liste des projets affectés</h3>
+
+      <!-- Tableau pour afficher les projets assignés -->
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Nom d'utilisateur</th>
+            <th>Nom du projet</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let assignment of allAssignments">
+            <td><input type="text" [(ngModel)]="assignment.userName" class="form-control"></td>
+            <td><input type="text" [(ngModel)]="assignment.projectName" class="form-control"></td>
+            <td><input type="date" [(ngModel)]="assignment.startDate" class="form-control"></td>
+            <td><input type="date" [(ngModel)]="assignment.endDate" class="form-control"></td>
+            <td>
+              <!-- Boutons d'actions -->
+              <button
+          class="btn btn-primary"
+          (click)="updateAssignment(assignment)">
+          <i class="fas fa-edit"></i> Modifier
+        </button>
+              <button class="btn btn-danger" (click)="deleteAssignment(assignment)">
+                <i class="fas fa-trash-alt"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div> <!-- Fin du card-body -->
+
+    
+  </div> <!-- Fin de la carte -->
+
+  <!-- Zone de notification pour les messages Toast -->
+  <p-toast></p-toast>
+
+  
+
+</div> <!-- Fin du conteneur principal -->

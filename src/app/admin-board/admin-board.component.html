@@ -1,40 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Page avec Arrière-Plan d'Image</title>
+    <!-- Inclure Bootstrap et Font Awesome -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- CSS personnalisé -->
+    <style>
+        /* Arrière-plan de la page avec une image */
+        body {
+            background-image: url('https://www.groupebcp.com/fr/PublishingImages/GBP_Filiales/BCP-BANK-MAURICE.png'); /* Exemple d'image en ligne */
+            background-size: cover; /* Couvre toute la page */
+            background-position: center; /* Centre l'image */
+            background-repeat: no-repeat; /* Empêche la répétition de l'image */
+            color: white; /* Texte blanc pour le contraste */
+        }
+
+        /* Conteneur avec un arrière-plan semi-transparent */
+        .container {
+            background: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
+            padding: 20px; /* Espacement intérieur */
+            border-radius: 5px; /* Bordures arrondies */
+        }
+
+        h2, h3, h4 {
+            color: #ff6600; /* Orange vif pour les titres */
+        }
+
+        .btn-success {
+            background-color: #ff6600; /* Orange vif pour les boutons */
+            border-color: #ff6600;
+        }
+
+        .btn-primary {
+            background-color: #333; /* Gris foncé pour les boutons */
+            border-color: #333;
+        }
+    </style>
+</head>
+<body>
 <div class="container mt-3">
     <h2>Gestion des utilisateurs et des projets</h2>
 
     <!-- Formulaire pour ajouter un nouvel utilisateur -->
     <div class="mb-4">
         <h4>Ajouter un utilisateur</h4>
-        <div class="mb-4">
-            <h4>Ajouter un utilisateur</h4>
-            <form (ngSubmit)="addUser(addUserForm.value)" #addUserForm="ngForm">
-                <div class="form-row">
-                    <div class="col">
-                        <input type="text" ngModel name="username" class="form-control" placeholder="Nom d'utilisateur" required>
-                    </div>
-                    <div class="col">
-                        <input type="email" ngModel name="email" class="form-control" placeholder="Email" required>
-                    </div>
-                    <div class="col">
-                        <input type="password" ngModel name="password" class="form-control" placeholder="Mot de passe" required>
-                    </div>
-                    <div class="col">
-                        <select [(ngModel)]="selectedRole" ngModel name="role" class="form-control">
-                            <option value="ROLE_USER">Utilisateur</option>
-                            <option value="ROLE_MODERATOR">Modérateur</option>
-                            <option value="ROLE_ADMIN">Admin</option>
-                        </select>
-                    </div>
-                    <div class="col" *ngIf="selectedRole === 'ROLE_USER'">
-                        <select [(ngModel)]="selectedModeratorId" ngModel name="moderatorId" class="form-control">
-                            <option *ngFor="let mod of moderators" [value]="mod.id">{{ mod.username }}</option>
-                        </select>
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-success" [disabled]="!addUserForm.valid">Ajouter</button>
-                    </div>
+        <form (ngSubmit)="addUser(addUserForm.value)" #addUserForm="ngForm">
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" ngModel name="username" class="form-control" placeholder="Nom d'utilisateur" required>
                 </div>
-            </form>
-        </div>
+                <div class="col">
+                    <input type="email" ngModel name="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="col">
+                    <input type="password" ngModel name="password" class="form-control" placeholder="Mot de passe" required>
+                </div>
+                <div class="col">
+                    <select [(ngModel)]="selectedRole" name="role" class="form-control">
+                        <option value="ROLE_USER">Utilisateur</option>
+                        <option value="ROLE_MODERATOR">Modérateur</option>
+                        <option value="ROLE_ADMIN">Admin</option>
+                    </select>
+                </div>
+                <div class="col" *ngIf="selectedRole === 'ROLE_USER'">
+                    <select [(ngModel)]="selectedModeratorId" ngModel name="moderatorId" class="form-control">
+                        <option *ngFor="let mod of moderators" [value]="mod.id">{{ mod.username }}</option>
+                    </select>
+                </div>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success" [disabled]="!addUserForm.valid">
+                        <i class="fas fa-plus"></i> Ajouter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <!-- Formulaire pour ajouter un projet -->
     <div class="mb-4">
@@ -43,20 +85,22 @@
             <div class="form-row">
                 <div class="col">
                     <label pour="nomProjet">Nom du projet:</label>
-                    <input type="text" id="nomProjet" [(ngModel)]="nomProjet" name="nomProjet" class="form-control" required>
+                    <input type="text" id="nomProjet" [(ngModel)]="nomProjet" class="form-control" required>
                 </div>
                 <div class="col">
                     <label pour="codeProjet">Code du projet:</label>
-                    <input type="text" id="codeProjet" [(ngModel)]="codeProjet" name="codeProjet" class="form-control" required>
+                    <input type="text" id="codeProjet" [(ngModel)]="codeProjet" class="form-control" required>
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-success">Ajouter</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Ajouter
+                    </button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- Tableau des utilisateurs existants pour la mise à jour ou suppression -->
+    <!-- Tableau des utilisateurs existants -->
     <h3>Utilisateurs</h3>
     <table class="table table-bordered">
         <thead class="thead-dark">
@@ -70,100 +114,71 @@
         <tbody>
             <tr *ngFor="let user of users">
                 <td>
-                    <input type="text" [(ngModel)]="user.username" name="username{{user.id}}" class="form-control">
+                    <input type="text" [(ngModel)]="user.username" class="form-control">
                 </td>
                 <td>
-                    <input type="email" [(ngModel)]="user.email" name="email{{user.id}}" class="form-control">
+                    <input type="email" [(ngModel)]="user.email" class="form-control">
                 </td>
                 <td>
-                    <select [(ngModel)]="user.selectedRole" (change)="updateRole(user, user.selectedRole)" class="form-control">
+                    <select [(ngModel)]="user.selectedRole" class="form-control">
                         <option *ngFor="let role of allRoles" [value]="role">{{ role }}</option>
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-primary" (click)="updateUser(user)">Modifier</button>
-                    <button class="btn btn-danger" (click)="deleteUser(user)">Supprimer</button>
+                    <button class="btn btn-primary" (click)="updateUser(user)">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteUser(user)">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </button>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <!-- Affichage des projets existants -->
+    <!-- Tableau des projets existants -->
     <h3>Projets</h3>
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>Nom Projet</th>
-                <th>Code Projet</th>
+                <th>Nom du projet</th>
+                <th>Code du projet</th>
                 <th>Actions</th>
-               
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let project of projects">
                 <td>
-                    <input type="text" [(ngModel)]="project.nomProjet" name="nomProjet" class="form-control">
+                    <input type="text" [(ngModel)]="project.nomProjet" class="form-control">
                 </td>
                 <td>
-                    <input type="text" [(ngModel)]="project.codeProjet" name="codeProjet" class="form-control">
+                    <input type="text" [(ngModel)]="project.codeProjet" class="form-control">
                 </td>
                 <td>
-                    <button class="btn btn-primary" (click)="updateProject(project)">Modifier</button>
-                    <button class="btn btn-danger" (click)="deleteProject(project)">Supprimer</button>
+                    <button class="btn btn-primary" (click)="updateProject(project)">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteProject(project)">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </button>
                 </td>
             </tr>
         </tbody>
     </table>
-
-
-
-
-
-
-
-<!-- Affichage des projets existants -->
-<h3>Projets Assign</h3>
-<table class="table table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>Nom Projet</th>
-            <th>Code Projet</th>
-            <th>User</th>
-            <th>Actions</th>
-           
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let project of projects">
-            <td>
-                <input type="text" [(ngModel)]="project.nomProjet" name="nomProjet" class="form-control">
-            </td>
-            <td>
-                <input type="text" [(ngModel)]="project.codeProjet" name="codeProjet" class="form-control">
-            </td>
-            <td>
-                <input type="text" [(ngModel)]="project.codeProjet" name="codeProjet" class="form-control">
-            </td>
-            <td>
-                <button class="btn btn-primary" (click)="updateProject(project)">Modifier</button>
-                <button class="btn btn-danger" (click)="deleteProject(project)">Supprimer</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

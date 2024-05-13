@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,6 +40,7 @@ import { MessageService } from 'primeng/api'; // nécessaire pour `p-toast`
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    DialogModule,
     ToastModule,
   ],
   providers: [
