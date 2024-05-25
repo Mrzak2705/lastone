@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from './_services/token-storage.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,22 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
+  sideBarOpen = true;
   username: string;
+  showHeaderAndSidebar = true;  // Declare the property here
 
-  constructor(private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService, private router: Router){
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Set the visibility based on the route
+        this.showHeaderAndSidebar = !['/login', '/register'].includes(event.urlAfterRedirects);
+      }
+    });
+  }
+
+  sideBarToggler() {
+    this.sideBarOpen = !this.sideBarOpen;
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -29,8 +43,5 @@ export class AppComponent implements OnInit {
     }
   }
 
-  logout(): void {
-    this.tokenStorageService.signOut();
-    window.location.reload();
-  }
+ 
 }

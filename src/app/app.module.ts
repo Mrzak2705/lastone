@@ -20,11 +20,30 @@ import { AssignProjectsComponent } from './assign-projects/assign-projects.compo
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { ProjectAssignmentService } from './_services/project-assignment.service'; // vérifiez le chemin
 import { UserService } from './_services/user.service'; // vérifiez le chemin
-import { MessageService } from 'primeng/api'; // nécessaire pour `p-toast`
+import { MessageService } from 'primeng/api';
+import { ProjectManagementComponent } from './project-management/project-management.component'; // nécessaire pour `p-toast`
+
+
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { HeaderComponent } from './header/header.component';
+
+
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
+    DashboardComponent,
+    SidenavComponent,
     LoginComponent,
     RegisterComponent,
     AdminBoardComponent,
@@ -34,6 +53,7 @@ import { MessageService } from 'primeng/api'; // nécessaire pour `p-toast`
     BoardModeratorComponent,
     BoardUserComponent,
     AssignProjectsComponent,
+    ProjectManagementComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +62,16 @@ import { MessageService } from 'primeng/api'; // nécessaire pour `p-toast`
     HttpClientModule,
     DialogModule,
     ToastModule,
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+    MatMenuModule 
   ],
   providers: [
     authInterceptorProviders,

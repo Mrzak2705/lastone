@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class ProjetRequest {\n  constructor(nomProjet, codeProjet) {\n    this.nomProjet = nomProjet;\n    this.codeProjet = codeProjet;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

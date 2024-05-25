@@ -29,4 +29,8 @@ export class AuthService {
       password: user.password
     }, httpOptions);
   }
+  logout(): void {
+    localStorage.removeItem('authToken'); // Supposant que 'authToken' est votre clé de stockage
+    sessionStorage.clear();
+}
 }

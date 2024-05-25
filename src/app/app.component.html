@@ -1,45 +1,11 @@
-<div id="app">
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <!-- Logo de la marque -->
-    <a href="#" class="navbar-brand">
-      <img src="https://www.zonebourse.com/static/private-issuer-squared-9I42B.png" alt="Logo BCPT Service" style="height: 55px;">
-    </a>
-    <ul class="navbar-nav mr-auto" routerLinkActive="active">
-      <li class="nav-item" *ngIf="showAdminBoard">
-        <a href="/admin" class="nav-link" routerLink="admin">Admin Board</a>
-      </li>
-      <li class="nav-item" *ngIf="showModeratorBoard">
-        <a href="/mod" class="nav-link" routerLink="mod">Moderator Board</a>
-      </li>
-      <li class="nav-item" *ngIf="isLoggedIn">
-        <a href="/user" class="nav-link" routerLink="user">User</a>
-      </li>
-      <li class="nav-item" *ngIf="showAdminBoard">
-        <a class="nav-link" routerLink="/admin-board">admin-list</a>
-      </li>
-      <li class="nav-item" *ngIf="showAdminBoard">
-        <a class="nav-link" [routerLink]="['/affectation']">Affectation</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
-      <li class="nav-item">
-        <a href="/profile" class="nav-link" routerLink="profile">
-          <i class="fas fa-user"></i> <!-- Icône d'utilisateur -->
-          {{ username }}
-        </a>
-      </li>
-      <li class="nav-item">
-        <!-- Ajout de l'icône de déconnexion -->
-        <a href="#" class="nav-link" (click)="logout()">
-          <i class="fas fa-sign-out-alt"></i> <!-- Icône de déconnexion -->
-          LogOut
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="container">
+<mat-drawer-container *ngIf="showHeaderAndSidebar">
+  <mat-drawer mode="side" [opened]="sideBarOpen">
+    <app-sidenav></app-sidenav>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-header (toggleSidebarForMe)="sideBarToggler()"></app-header>
     <router-outlet></router-outlet>
-  </div>
-</div>
+  </mat-drawer-content>
+</mat-drawer-container>
+<router-outlet *ngIf="!showHeaderAndSidebar"></router-outlet>
+

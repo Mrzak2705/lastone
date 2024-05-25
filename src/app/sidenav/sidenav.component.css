@@ -1,0 +1,22 @@
+:host ::ng-deep .mat-mdc-list-base .mdc-list-item:hover {
+  background-color: #2c3344; /* Couleur de fond au survol */
+}
+
+.mat-divider {
+  border-top-width: 2px;
+  border-color: white;
+}
+
+
+
+.mat-list-item:hover {
+  color: #f2f5f7 !important;
+}
+
+
+
+
+
+.list-item-active {
+  color: #f2f5f7 !important;
+}

@@ -1,0 +1,98 @@
+
+<div class="container-fluid page">
+    <div class="d-flex page__box p-3 mt-2">Gestion des Projets</div>
+    <div class="page__content shadow p-3 position-relative">
+      
+        
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Gestion des Projets</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+           
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h2, h3, h4 {
+            color: #ff6600;
+        }
+        .btn-success {
+            background-color: #ff6600;
+            border-color: #ff6600;
+        }
+        .btn-primary {
+            background-color: #333;
+            border-color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-3">
+    <h2>Gestion des Projets</h2>
+    <div class="mb-4">
+        <h4>Ajouter un projet</h4>
+        <form (ngSubmit)="addProject()">
+            <div class="form-row">
+                <div class="col">
+                    <label for="nomProjet">Nom du projet:</label>
+                    <input type="text" id="nomProjet" [(ngModel)]="nomProjet" class="form-control" required>
+                </div>
+                <div class="col">
+                    <label for="codeProjet">Code du projet:</label>
+                    <input type="text" id="codeProjet" [(ngModel)]="codeProjet" class="form-control" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Ajouter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <h3>Projets</h3>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nom du projet</th>
+                <th>Code du projet</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let project of projects">
+                <td>
+                    <input type="text" [(ngModel)]="project.nomProjet" class="form-control">
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="project.codeProjet" class="form-control">
+                </td>
+                <td>
+                    <button class="btn btn-primary" (click)="updateProject(project)">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteProject(project)">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+    </div>
+  </div>
+  
+
+
